@@ -44,12 +44,12 @@ client = TestClient(app)
 
 
 # ---------------------------------------------------------------------------
-# Tests GET /pizzas/{style}
+# Tests GET /api/pizzas/{style}
 # ---------------------------------------------------------------------------
 
 class TestGetPizza:
     def test_colombian_pizza(self):
-        response = client.get("/pizzas/colombian")
+        response = client.get("/api/pizzas/colombian")
         assert response.status_code == 200
         body = response.json()
         assert body["style"] == "colombian"
@@ -58,25 +58,25 @@ class TestGetPizza:
         assert isinstance(body["price"], float)
 
     def test_italian_pizza(self):
-        response = client.get("/pizzas/italian")
+        response = client.get("/api/pizzas/italian")
         assert response.status_code == 200
         body = response.json()
         assert body["style"] == "italian"
         assert "mozzarella" in body["ingredients"]
 
     def test_american_pizza(self):
-        response = client.get("/pizzas/american")
+        response = client.get("/api/pizzas/american")
         assert response.status_code == 200
         body = response.json()
         assert body["style"] == "american"
         assert "pepperoni" in body["ingredients"]
 
     def test_invalid_style_returns_422(self):
-        response = client.get("/pizzas/german")
+        response = client.get("/api/pizzas/german")
         assert response.status_code == 422
 
     def test_list_pizzas(self):
-        response = client.get("/pizzas/")
+        response = client.get("/api/pizzas/")
         assert response.status_code == 200
         styles = response.json()
         assert "colombian" in styles
@@ -85,12 +85,12 @@ class TestGetPizza:
 
 
 # ---------------------------------------------------------------------------
-# Tests POST /orders
+# Tests POST /api/orders
 # ---------------------------------------------------------------------------
 
 class TestCreateOrder:
     def test_create_colombian_order(self):
-        response = client.post("/orders/", json={"style": "colombian"})
+        response = client.post("/api/orders/", json={"style": "colombian"})
         assert response.status_code == 201
         body = response.json()
         assert body["style"] == "colombian"
@@ -98,12 +98,12 @@ class TestCreateOrder:
         assert isinstance(body["id"], int)
 
     def test_create_italian_order(self):
-        response = client.post("/orders/", json={"style": "italian"})
+        response = client.post("/api/orders/", json={"style": "italian"})
         assert response.status_code == 201
         assert response.json()["style"] == "italian"
 
     def test_invalid_order_style(self):
-        response = client.post("/orders/", json={"style": "japanese"})
+        response = client.post("/api/orders/", json={"style": "japanese"})
         assert response.status_code == 422
 
 

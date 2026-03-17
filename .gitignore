@@ -1,0 +1,6 @@
+echo backend/__pycache__/ > .gitignore
+echo backend/test.db >> .gitignore
+echo backend/test_output.txt >> .gitignore
+echo .agent/ >> .gitignore
+git add .gitignore
+git commit -m "add gitignore"

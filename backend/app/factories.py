@@ -1,5 +1,4 @@
 """
-Pizza Abstract Factory — patrón sin if/else/match.
 Cada fábrica concreta ensambla dough + sauce + topping propios de su estilo.
 """
 from __future__ import annotations

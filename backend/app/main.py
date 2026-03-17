@@ -43,8 +43,8 @@ app.add_middleware(
 )
 
 # Routers
-app.include_router(pizzas_router)
-app.include_router(orders_router)
+app.include_router(pizzas_router, prefix="/api")
+app.include_router(orders_router, prefix="/api")
 
 
 @app.get("/", tags=["health"])

@@ -115,7 +115,9 @@ function App() {
 
           {/* Preview Panel */}
           <div className="md:col-span-7 flex items-center justify-center p-4">
-            <Preview ingredients={pizzaData?.ingredients} />
+            <Preview ingredients={pizzaData?.ingredients} 
+                      price={pizzaData?.price} 
+            style={pizzaData?.style} />
           </div>
           
         </div>
