@@ -1,35 +1,25 @@
-version: '3.8'
+
 services:
   backend:
-    build: ./backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: pizza-backend
     ports:
       - "8000:8000"
-    volumes:
-      - ./backend:/app
     environment:
-      - PYTHONPATH=/app
-    depends_on:
-      - db  # Opcional PostgreSQL
+      - DATABASE_URL=sqlite:///./pizza.db  # Local sin Postgres
+    volumes:
+      - ./backend/app:/app/app:ro
+    restart: unless-stopped
 
   frontend:
-    build: ./frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: pizza-frontend
     ports:
-      - "5173:5173"
-    volumes:
-      - ./frontend:/app
+      - "5173:80"
     depends_on:
       - backend
-
-  db:  # PostgreSQL para orders (tu stack)
-    image: postgres:16
-    environment:
-      POSTGRES_DB: pizza
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: pass
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-
-volumes:
-  postgres_data:
+    restart: unless-stopped

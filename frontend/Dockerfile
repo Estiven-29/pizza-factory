@@ -1,15 +1,23 @@
-# Build stage
-FROM node:20-alpine AS build
+# Etapa 1: build de React con Vite
+FROM node:20-alpine AS builder
+
 WORKDIR /app
+
 COPY package*.json ./
-RUN npm ci
+RUN npm install
+
 COPY . .
 RUN npm run build
 
-# Serve stage
+# Etapa 2: servir estático con Nginx
 FROM nginx:alpine
-COPY --from=build /app/dist /usr/share/nginx/html
-# Copiamos la configuracion de nginx (opcional, pero buena practica para SPA) si la hubiera, 
-# sino el default de nginx servirá para el root.
+
+# Copiamos el build de Vite
+COPY --from=builder /app/dist /usr/share/nginx/html
+
+# Config de Nginx
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
 EXPOSE 80
+
 CMD ["nginx", "-g", "daemon off;"]
